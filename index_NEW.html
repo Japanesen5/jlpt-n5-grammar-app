@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<title>JLPT N5 App - 五十音 + N5</title>
+<style>
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#f9fafb;
+  color:#111827;
+}
+#app{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:stretch;
+}
+.app-shell{
+  width:100%;
+  max-width:1100px;
+  margin:24px;
+  background:#ffffff;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 18px 40px rgba(15,23,42,.12);
+  display:flex;
+}
+/* sidebar */
+.sidebar{
+  width:260px;
+  background:#fff7e6;
+  color:#78350f;
+  padding:20px 18px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  border-right:1px solid #fed7aa;
+}
+.sidebar-logo{
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:.04em;
+}
+.sidebar-sub{
+  font-size:12px;
+  color:#9a3412;
+  margin-top:4px;
+}
+.home-mode-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.home-mode-btn{
+  width:100%;
+  padding:10px 12px;
+  border-radius:999px;
+  border:1px solid #fed7aa;
+  background:#fff;
+  color:#92400e;
+  text-align:left;
+  cursor:pointer;
+  font-size:13px;
+  display:flex;
+  flex-direction:column;
+  transition:.15s all ease-in-out;
+}
+.home-mode-btn span.title{
+  font-size:14px;
+  font-weight:600;
+}
+.home-mode-btn span.desc{
+  font-size:11px;
+  color:#a16207;
+}
+.home-mode-btn:hover{
+  background:#fef3c7;
+}
+.home-mode-btn.active{
+  background:#facc15;
+  border-color:#eab308;
+  color:#78350f;
+}
+.sidebar-section-title{
+  margin-top:8px;
+  font-size:12px;
+  color:#9a3412;
+}
+#chapter-list{margin-top:4px;}
+.chapter-button{
+  width:100%;
+  margin-bottom:6px;
+  padding:8px 10px;
+  border-radius:10px;
+  border:none;
+  text-align:left;
+  background:transparent;
+  color:#92400e;
+  cursor:pointer;
+  font-size:13px;
+  transition:.15s all ease-in-out;
+}
+.chapter-button span.main{
+  display:block;
+  font-weight:500;
+}
+.chapter-button span.sub{
+  display:block;
+  font-size:11px;
+  color:#a16207;
+}
+.chapter-button:hover{
+  background:#fef3c7;
+}
+.chapter-button.active{
+  background:#facc15;
+  color:#78350f;
+}
+/* main */
+.main-area{
+  flex:1;
+  background:#f9fafb;
+  padding:20px 24px;
+}
+.header-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:14px;
+  gap:8px;
+}
+.header-title{
+  font-size:16px;
+  font-weight:600;
+  color:#92400e;
+}
+.lang-select{
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid #e5e7eb;
+  background:#ffffff;
+  color:#374151;
+  font-size:12px;
+}
+/* home */
+.main-home{display:none;}
+.main-home.active{display:block;}
+.home-title{
+  font-size:26px;
+  margin:0 0 6px;
+  color:#111827;
+}
+.home-subtitle{
+  font-size:14px;
+  color:#4b5563;
+  margin-bottom:18px;
+}
+.home-cards{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+}
+.home-card{
+  flex:1;
+  min-width:220px;
+  background:#ffffff;
+  border-radius:18px;
+  padding:16px 18px;
+  box-shadow:0 10px 30px rgba(15,23,42,.06);
+  cursor:pointer;
+  border:1px solid #fde68a;
+  transition:.15s all ease-in-out;
+}
+.home-card:hover{
+  box-shadow:0 12px 32px rgba(15,23,42,.09);
+  border-color:#fbbf24;
+}
+.home-card-title{
+  font-size:18px;
+  margin-bottom:4px;
+  color:#92400e;
+}
+.home-card-tag{
+  display:inline-block;
+  padding:2px 8px;
+  border-radius:999px;
+  font-size:11px;
+  background:#fef3c7;
+  color:#92400e;
+  margin-bottom:8px;
+}
+.home-card-text{
+  font-size:13px;
+  color:#4b5563;
+}
+/* study header */
+.study-header{
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+  flex-wrap:wrap;
+}
+.study-header-left{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+#study-mode-label{
+  font-size:11px;
+  color:#9ca3af;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+#chapter-title{
+  margin:0;
+  font-size:20px;
+  color:#111827;
+}
+.study-header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.kana-tabs{
+  display:flex;
+  gap:8px;
+}
+.kana-tab-btn{
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid #e5e7eb;
+  background:#ffffff;
+  color:#374151;
+  cursor:pointer;
+  font-size:12px;
+}
+.kana-tab-btn.active{
+  background:#facc15;
+  border-color:#eab308;
+  color:#78350f;
+}
+.view-switch{
+  display:flex;
+  gap:8px;
+}
+.view-button{
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid #e5e7eb;
+  background:#ffffff;
+  color:#374151;
+  cursor:pointer;
+  font-size:12px;
+}
+.view-button.active{
+  background:#111827;
+  color:#f9fafb;
+  border-color:#111827;
+}
+/* panels */
+.panel{
+  display:none;
+  background:#ffffff;
+  border-radius:16px;
+  padding:16px 18px;
+  box-shadow:0 12px 30px rgba(15,23,42,.06);
+  border:1px solid #e5e7eb;
+}
+.panel.active{display:block;}
+/* grammar + examples */
+.grammar-point{
+  margin-bottom:20px;
+  padding-bottom:14px;
+  border-bottom:1px solid #e5e7eb;
+}
+.grammar-title{
+  font-weight:600;
+  margin-bottom:4px;
+  color:#111827;
+}
+.grammar-explain{
+  font-size:14px;
+  color:#4b5563;
+  margin-bottom:6px;
+}
+.example-list{
+  margin:0;
+  padding-left:18px;
+  font-size:14px;
+}
+.example-ja{font-weight:500;}
+.example-zh{color:#6b7280;}
+/* kana table */
+.kana-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:14px;
+}
+.kana-table th,
+.kana-table td{
+  border:1px solid #e5e7eb;
+  padding:4px 6px;
+  vertical-align:top;
+}
+.kana-table th{
+  background:#fef3c7;
+  font-weight:600;
+  color:#92400e;
+}
+.kana-table td{background:#ffffff;}
+.kana-consonant{
+  width:56px;
+  text-align:center;
+  font-weight:600;
+}
+.kana-vowel-header{
+  text-align:center;
+  font-weight:500;
+}
+.kana-row-cells{
+  display:flex;
+  gap:6px;
+}
+.kana-cell{
+  flex:1;
+  text-align:center;
+  padding:2px 0;
+}
+.kana-char{
+  font-size:18px;
+  display:block;
+}
+.kana-roma{
+  font-size:11px;
+  color:#6b7280;
+  display:block;
+}
+/* vocab (N5 單字風格) */
+.vocab-section-title{
+  margin:0 0 4px;
+  font-size:15px;
+  font-weight:600;
+  color:#92400e;
+}
+.vocab-section-bar{
+  margin-top:8px;
+  background:#fef3c7;
+  border-left:4px solid #facc15;
+  padding:6px 8px;
+  border-radius:6px;
+}
+.vocab-section-desc{
+  font-size:13px;
+  color:#6b7280;
+}
+.vocab-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:4px;
+  font-size:14px;
+}
+.vocab-table th,
+.vocab-table td{
+  border:1px solid #e5e7eb;
+  padding:4px 6px;
+}
+.vocab-table th{
+  background:#fef9c3;
+  font-weight:600;
+  color:#92400e;
+}
+.vocab-table td{background:#ffffff;}
+/* quiz */
+.quiz-question{
+  margin-bottom:16px;
+  padding-bottom:12px;
+  border-bottom:1px solid #e5e7eb;
+}
+.quiz-question p{margin:0 0 8px;}
+.options{margin-bottom:8px;}
+.option-label{
+  display:block;
+  margin-bottom:4px;
+  font-size:14px;
+}
+input[type="text"]{
+  width:100%;
+  padding:6px 8px;
+  border-radius:6px;
+  border:1px solid #d1d5db;
+  font-size:14px;
+  background:#ffffff;
+  color:#111827;
+}
+#submit-quiz{
+  margin-top:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:none;
+  background:#facc15;
+  color:#78350f;
+  font-size:14px;
+  cursor:pointer;
+}
+#submit-quiz:hover{
+  background:#eab308;
+}
+#quiz-result{
+  margin-top:14px;
+  padding-top:10px;
+  border-top:1px solid #e5e7eb;
+  font-size:14px;
+}
+.wrong-detail{
+  margin-top:6px;
+  padding:6px 8px;
+  background:#fef2f2;
+  border-radius:6px;
+  border:1px solid #fecaca;
+  color:#991b1b;
+}
+/* responsive */
+@media(max-width:900px){
+  .app-shell{flex-direction:column;}
+  .sidebar{width:100%;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div>
+        <div class="sidebar-logo">JLPT N5</div>
+        <div class="sidebar-sub">五十音 + N5 文法・單字 小工具</div>
+      </div>
+
+      <div class="home-mode-buttons">
+        <button id="home-kana-btn" class="home-mode-btn active">
+          <span class="title">五十音</span>
+          <span class="desc">平假名・片假名・濁音・拗音</span>
+        </button>
+        <button id="home-n5-btn" class="home-mode-btn">
+          <span class="title">N5</span>
+          <span class="desc">N5 文法 + N5 單字</span>
+        </button>
+      </div>
+
+      <div class="sidebar-section-title">章節列表</div>
+      <div id="chapter-list"></div>
+    </aside>
+
+    <div class="main-area">
+      <div class="header-bar">
+        <div class="header-title">JLPT N5 學習面板</div>
+        <div>
+          <select id="lang-select" class="lang-select">
+            <option value="zhTW">繁體中文（台灣）</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="main-home" class="main-home active">
+        <h1 class="home-title">歡迎使用 JLPT N5 應用程式</h1>
+        <p class="home-subtitle">主頁只有兩個入口：「五十音」與「N5」，進入 N5 後可選擇文法或單字。</p>
+        <div class="home-cards">
+          <div id="home-card-kana" class="home-card">
+            <div class="home-card-tag">STEP 1</div>
+            <div class="home-card-title">五十音</div>
+            <div class="home-card-text">
+              練好平假名與片假名，再配合濁音・拗音表格，建立穩固的閱讀基礎。
+            </div>
+          </div>
+          <div id="home-card-n5" class="home-card">
+            <div class="home-card-tag">STEP 2</div>
+            <div class="home-card-title">N5（文法 + 單字）</div>
+            <div class="home-card-text">
+              N5 模式裡分成「N5 文法」與「N5 單字」，方便按需要切換練習。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="study-header" class="study-header">
+        <div class="study-header-left">
+          <div id="study-mode-label">MODE</div>
+          <h2 id="chapter-title"></h2>
+        </div>
+        <div class="study-header-right">
+          <div class="kana-tabs" id="kana-tabs" style="display:none;">
+            <button id="kana-hira-btn" class="kana-tab-btn active">平假名</button>
+            <button id="kana-kata-btn" class="kana-tab-btn">片假名</button>
+          </div>
+          <div class="view-switch" id="view-switch">
+            <button id="lesson-view-btn" class="view-button active">課文</button>
+            <button id="quiz-view-btn" class="view-button">測驗</button>
+          </div>
+        </div>
+      </div>
+
+      <section id="lesson-view" class="panel"></section>
+      <section id="quiz-view" class="panel"></section>
+    </div>
+  </div>
+</div>
+
+<script>
+// ====== 50音資料 ======
+const kanaChapters = [
+  {
+    title:'日語50音：平假名／片假名',
+    type:'kana',
+    lessons:[
+      {
+        title:'清音：子音 × 母音',
+        explain:'左側為子音，與上方母音（あ・い・う・え・お）組合後形成清音。格內上方是假名，下方為羅馬拼音。',
+        kanaGrid:[
+          {consonant:'',kana:['あ','い','う','え','お'],roma:['a','i','u','e','o'],kanaKata:['ア','イ','ウ','エ','オ']},
+          {consonant:'か',kana:['か','き','く','け','こ'],roma:['ka','ki','ku','ke','ko'],kanaKata:['カ','キ','ク','ケ','コ']},
+          {consonant:'さ',kana:['さ','し','す','せ','そ'],roma:['sa','shi','su','se','so'],kanaKata:['サ','シ','ス','セ','ソ']},
+          {consonant:'た',kana:['た','ち','つ','て','と'],roma:['ta','chi','tsu','te','to'],kanaKata:['タ','チ','ツ','テ','ト']},
+          {consonant:'な',kana:['な','に','ぬ','ね','の'],roma:['na','ni','nu','ne','no'],kanaKata:['ナ','ニ','ヌ','ネ','ノ']},
+          {consonant:'は',kana:['は','ひ','ふ','へ','ほ'],roma:['ha','hi','fu','he','ho'],kanaKata:['ハ','ヒ','フ','ヘ','ホ']},
+          {consonant:'ま',kana:['ま','み','む','め','も'],roma:['ma','mi','mu','me','mo'],kanaKata:['マ','ミ','ム','メ','モ']},
+          {consonant:'や',kana:['や','','ゆ','','よ'],roma:['ya','','yu','','yo'],kanaKata:['ヤ','','ユ','','ヨ']},
+          {consonant:'ら',kana:['ら','り','る','れ','ろ'],roma:['ra','ri','ru','re','ro'],kanaKata:['ラ','リ','ル','レ','ロ']},
+          {consonant:'わ',kana:['わ','','','','を'],roma:['wa','','','','o(wo)'],kanaKata:['ワ','','','','ヲ']},
+          {consonant:'撥音',kana:['ん','','','',''],roma:['n','','','',''],kanaKata:['ン','','','','']}
+        ]
+      },
+      {
+        title:'濁音・半濁音',
+        explain:'在清音上加濁點成濁音，加半濁點成半濁音，建議先熟悉清音再加入這一行。',
+        kanaGrid:[
+          {consonant:'が',kana:['が','ぎ','ぐ','げ','ご'],roma:['ga','gi','gu','ge','go'],kanaKata:['ガ','ギ','グ','ゲ','ゴ']},
+          {consonant:'ざ',kana:['ざ','じ','ず','ぜ','ぞ'],roma:['za','ji','zu','ze','zo'],kanaKata:['ザ','ジ','ズ','ゼ','ゾ']},
+          {consonant:'だ',kana:['だ','ぢ','づ','で','ど'],roma:['da','ji(ji/di)','zu(zu/du)','de','do'],kanaKata:['ダ','ヂ','ヅ','デ','ド']},
+          {consonant:'ば',kana:['ば','び','ぶ','べ','ぼ'],roma:['ba','bi','bu','be','bo'],kanaKata:['バ','ビ','ブ','ベ','ボ']},
+          {consonant:'ぱ',kana:['ぱ','ぴ','ぷ','ぺ','ぽ'],roma:['pa','pi','pu','pe','po'],kanaKata:['パ','ピ','プ','ペ','ポ']}
+        ]
+      },
+      {
+        title:'拗音（や・ゆ・よ組合）',
+        explain:'由「い段」子音 + 小「や／ゆ／よ」構成，如「き」+「ゃ」→「きゃ（kya）」。',
+        kanaGrid:[
+          {consonant:'きゃ',kana:['きゃ','きゅ','きょ','',''],roma:['kya','kyu','kyo','',''],kanaKata:['キャ','キュ','キョ','','']},
+          {consonant:'しゃ',kana:['しゃ','しゅ','しょ','',''],roma:['sha','shu','sho','',''],kanaKata:['シャ','シュ','ショ','','']},
+          {consonant:'ちゃ',kana:['ちゃ','ちゅ','ちょ','',''],roma:['cha','chu','cho','',''],kanaKata:['チャ','チュ','チョ','','']},
+          {consonant:'にゃ',kana:['にゃ','にゅ','にょ','',''],roma:['nya','nyu','nyo','',''],kanaKata:['ニャ','ニュ','ニョ','','']},
+          {consonant:'ひゃ',kana:['ひゃ','ひゅ','ひょ','',''],roma:['hya','hyu','hyo','',''],kanaKata:['ヒャ','ヒュ','ヒョ','','']},
+          {consonant:'みゃ',kana:['みゃ','みゅ','みょ','',''],roma:['mya','myu','myo','',''],kanaKata:['ミャ','ミュ','ミョ','','']},
+          {consonant:'りゃ',kana:['りゃ','りゅ','りょ','',''],roma:['rya','ryu','ryo','',''],kanaKata:['リャ','リュ','リョ','','']},
+          {consonant:'ぎゃ',kana:['ぎゃ','ぎゅ','ぎょ','',''],roma:['gya','gyu','gyo','',''],kanaKata:['ギャ','ギュ','ギョ','','']},
+          {consonant:'じゃ',kana:['じゃ','じゅ','じょ','',''],roma:['ja','ju','jo','',''],kanaKata:['ジャ','ジュ','ジョ','','']},
+          {consonant:'びゃ',kana:['びゃ','びゅ','びょ','',''],roma:['bya','byu','byo','',''],kanaKata:['ビャ','ビュ','ビョ','','']},
+          {consonant:'ぴゃ',kana:['ぴゃ','ぴゅ','ぴょ','',''],roma:['pya','pyu','pyo','',''],kanaKata:['ピャ','ピュ','ピョ','','']}
+        ]
+      }
+    ],
+    quiz:[
+      {type:'mc',question:'「か」的羅馬拼音是？',options:['ka','ki','ko'],answer:'ka',explanation:'か 對應 ka。'},
+      {type:'mc',question:'哪一個是拗音？',options:['か','きゃ','こ'],answer:'きゃ',explanation:'「き + 小や」→ きゃ。'},
+      {type:'input',question:'請寫出「shi」的平假名。',answer:['し'],explanation:'shi → し。'}
+    ]
+  }
+];
+
+// ====== N5 文法（第1課） ======
+const grammarChapters = [
+  {
+    title:'N5 文法',
+    type:'grammar-wrapper',
+    lessons:[
+      {
+        title:'第1課：名詞句（～です／じゃありません）＋ は・も・の',
+        explain:'點選左側「第1課」即可查看詳細文法與測驗。',
+        examples:[],
+        vocab:[]
+      }
+    ],
+    quiz:[]
+  },
+  {
+    title:'第1課：名詞句（～です／じゃありません）＋ は・も・の',
+    type:'grammar',
+    lessons:[
+      {
+        title:'文法 1：名詞＋です（肯定句）',
+        explain:'「名詞 + です」是最基本的「A 是 B」句型，用來有禮貌地介紹身分、職業、國籍等。',
+        examples:[
+          {rubyHtml:'<ruby>私<rt>わたし</rt></ruby>は学生です。',zh:'我是學生。'},
+          {rubyHtml:'<ruby>彼<rt>かれ</rt></ruby>は<ruby>日本人<rt>にほんじん</rt></ruby>です。',zh:'他是日本人。'},
+          {rubyHtml:'ここは<ruby>図書館<rt>としょかん</rt></ruby>です。',zh:'這裡是圖書館。'}
+        ],
+        vocab:[
+          {kanji:'私',hira:'わたし',zh:'我'},
+          {kanji:'学生',hira:'がくせい',zh:'學生'},
+          {kanji:'彼',hira:'かれ',zh:'他（男性）'},
+          {kanji:'日本人',hira:'にほんじん',zh:'日本人'},
+          {kanji:'図書館',hira:'としょかん',zh:'圖書館'},
+          {kanji:'ここ',hira:'ここ',zh:'這裡'}
+        ]
+      },
+      {
+        title:'文法 2：名詞＋じゃありません（否定句）',
+        explain:'「名詞 + じゃありません」是禮貌的否定，表示「不是……」。',
+        examples:[
+          {rubyHtml:'<ruby>私<rt>わたし</rt></ruby>は<ruby>先生<rt>せんせい</rt></ruby>じゃありません。',zh:'我不是老師。'},
+          {rubyHtml:'ここは<ruby>学校<rt>がっこう</rt></ruby>じゃありません。',zh:'這裡不是學校。'}
+        ],
+        vocab:[
+          {kanji:'先生',hira:'せんせい',zh:'老師'},
+          {kanji:'学校',hira:'がっこう',zh:'學校'}
+        ]
+      },
+      {
+        title:'文法 3：助詞「は」— 主題標記',
+        explain:'助詞「は」放在名詞後面，標記主題，相當於「至於 A 呢……」。',
+        examples:[
+          {rubyHtml:'<ruby>私<rt>わたし</rt></ruby>は<ruby>香港人<rt>ほんこんじん</rt></ruby>です。',zh:'我（的話）是香港人。'},
+          {rubyHtml:'<ruby>この人<rt>このひと</rt></ruby>は<ruby>田中<rt>たなか</rt></ruby>さんです。',zh:'這個人是田中先生。'}
+        ],
+        vocab:[
+          {kanji:'香港人',hira:'ほんこんじん',zh:'香港人'},
+          {kanji:'この人',hira:'このひと',zh:'這個人'},
+          {kanji:'田中',hira:'たなか',zh:'田中（姓氏）'}
+        ]
+      },
+      {
+        title:'文法 4：助詞「も」—「也」',
+        explain:'助詞「も」表示「也」，用來說明和前一個對象一樣。',
+        examples:[
+          {rubyHtml:'<ruby>私<rt>わたし</rt></ruby>も学生です。',zh:'我也是學生。'},
+          {rubyHtml:'<ruby>彼<rt>かれ</rt></ruby>も<ruby>香港人<rt>ほんこんじん</rt></ruby>です。',zh:'他也是香港人。'}
+        ],
+        vocab:[
+          {kanji:'も',hira:'も',zh:'也、也一樣'}
+        ]
+      },
+      {
+        title:'文法 5：助詞「の」— 所有格（A 的 B）',
+        explain:'助詞「の」連接兩個名詞，表示「A 的 B」。',
+        examples:[
+          {rubyHtml:'<ruby>私<rt>わたし</rt></ruby>の<ruby>名前<rt>なまえ</rt></ruby>',zh:'我的名字。'},
+          {rubyHtml:'<ruby>田中<rt>たなか</rt></ruby>さんの<ruby>本<rt>ほん</rt></ruby>です。',zh:'是田中先生的書。'}
+        ],
+        vocab:[
+          {kanji:'名前',hira:'なまえ',zh:'名字'},
+          {kanji:'本',hira:'ほん',zh:'書、本子'}
+        ]
+      }
+    ],
+    quiz:[
+      {type:'mc',question:'「我是學生。」正確的寫法？',options:['私は先生です。','私は学生です。','私は日本人です。'],answer:'私は学生です。',explanation:'主語「私」＋ 名詞「学生」＋ です。'},
+      {type:'mc',question:'「我不是老師。」應該怎麼寫？',options:['私は先生です。','私は先生じゃありません。','私は学生じゃありません。'],answer:'私は先生じゃありません。',explanation:'否定名詞用「じゃありません」。'},
+      {type:'mc',question:'「這裡不是學校。」哪一句正確？',options:['ここは学校です。','ここは学校じゃありません。','ここも学校です。'],answer:'ここは学校じゃありません。',explanation:'否定判斷用「じゃありません」。'},
+      {type:'mc',question:'哪一句使用「は」來標記主題？',options:['私の学生です。','学生も私です。','私は学生です。'],answer:'私は学生です。',explanation:'「私は」標記主題「我」。'},
+      {type:'mc',question:'想說「他也是香港人。」要選哪一句？',options:['彼は香港人です。','彼も香港人です。','彼の香港人です。'],answer:'彼も香港人です。',explanation:'「も」表示也。'},
+      {type:'mc',question:'「田中先生的書。」正確寫法？',options:['田中さんは本です。','田中さんも本です。','田中さんの本です。'],answer:'田中さんの本です。',explanation:'所有格用「の」。'},
+      {type:'input',question:'請用「です」寫「我是香港人。」',answer:['私は香港人です。','私はホンコン人です。'],explanation:'基本型：私は〜です。'},
+      {type:'input',question:'請用「じゃありません」寫「我不是學生。」',answer:['私は学生じゃありません。'],explanation:'名詞＋じゃありません。'},
+      {type:'input',question:'請用「も」寫「我也是學生。」',answer:['私も学生です。'],explanation:'把「は」換成「も」。'},
+      {type:'input',question:'請用「の」寫「我的名字。」（名詞結構即可）',answer:['私の名前'],explanation:'私の＋名前。'},
+      {type:'input',question:'請寫一句「この人是老師。」（用 は）',answer:['この人は先生です。'],explanation:'主題：この人は。'},
+      {type:'input',question:'請寫一句最基本自我介紹（包含「學生」）。',answer:['私は学生です。'],explanation:'N5 最基本句型。'}
+    ]
+  }
+];
+
+// ====== N5 單字（總表章節） ======
+const vocabChapters = [
+  {
+    title:'N5 單字',
+    type:'vocab',
+    lessons:[
+      {
+        title:'名詞：人物／身分',
+        explain:'常見人物與身分名詞。',
+        vocab:[
+          {kanji:'人',hira:'ひと',zh:'人'},
+          {kanji:'日本人',hira:'にほんじん',zh:'日本人'},
+          {kanji:'学生',hira:'がくせい',zh:'學生'},
+          {kanji:'先生',hira:'せんせい',zh:'老師'},
+          {kanji:'会社員',hira:'かいしゃいん',zh:'公司職員'},
+          {kanji:'医者',hira:'いしゃ',zh:'醫生'},
+          {kanji:'彼',hira:'かれ',zh:'他'},
+          {kanji:'彼女',hira:'かのじょ',zh:'她'}
+        ]
+      },
+      {
+        title:'名詞：場所',
+        explain:'常見場所相關名詞。',
+        vocab:[
+          {kanji:'学校',hira:'がっこう',zh:'學校'},
+          {kanji:'図書館',hira:'としょかん',zh:'圖書館'},
+          {kanji:'駅',hira:'えき',zh:'車站'},
+          {kanji:'病院',hira:'びょういん',zh:'醫院'},
+          {kanji:'銀行',hira:'ぎんこう',zh:'銀行'},
+          {kanji:'家',hira:'いえ',zh:'家、房子'},
+          {kanji:'部屋',hira:'へや',zh:'房間'},
+          {kanji:'教室',hira:'きょうしつ',zh:'教室'}
+        ]
+      },
+      {
+        title:'動詞：ます形',
+        explain:'以「ます形」為主的常用動詞。',
+        vocab:[
+          {kanji:'行きます',hira:'いきます',zh:'去'},
+          {kanji:'来ます',hira:'きます',zh:'來'},
+          {kanji:'帰ります',hira:'かえります',zh:'回去、回家'},
+          {kanji:'食べます',hira:'たべます',zh:'吃'},
+          {kanji:'飲みます',hira:'のみます',zh:'喝'},
+          {kanji:'見ます',hira:'みます',zh:'看'},
+          {kanji:'聞きます',hira:'ききます',zh:'聽'},
+          {kanji:'話します',hira:'はなします',zh:'說、講'}
+        ]
+      },
+      {
+        title:'形容詞：い形容詞／な形容詞',
+        explain:'N5 常見的 い形容詞、な形容詞。',
+        vocab:[
+          {kanji:'大きい',hira:'おおきい',zh:'大'},
+          {kanji:'小さい',hira:'ちいさい',zh:'小'},
+          {kanji:'新しい',hira:'あたらしい',zh:'新的'},
+          {kanji:'古い',hira:'ふるい',zh:'舊的'},
+          {kanji:'楽しい',hira:'たのしい',zh:'開心的、有趣的'},
+          {kanji:'きれい',hira:'きれい',zh:'漂亮、乾淨'},
+          {kanji:'静か',hira:'しずか',zh:'安靜'},
+          {kanji:'有名',hira:'ゆうめい',zh:'有名'},
+          {kanji:'親切',hira:'しんせつ',zh:'親切'}
+        ]
+      }
+    ],
+    quiz:[]
+  }
+];
+
+// ====== DOM / state ======
+const mainHomeEl=document.getElementById('main-home');
+const studyHeaderEl=document.getElementById('study-header');
+const chapterTitleEl=document.getElementById('chapter-title');
+const lessonViewEl=document.getElementById('lesson-view');
+const quizViewEl=document.getElementById('quiz-view');
+const lessonViewBtn=document.getElementById('lesson-view-btn');
+const quizViewBtn=document.getElementById('quiz-view-btn');
+const chapterListEl=document.getElementById('chapter-list');
+const studyModeLabelEl=document.getElementById('study-mode-label');
+const homeKanaBtn=document.getElementById('home-kana-btn');
+const homeN5Btn=document.getElementById('home-n5-btn');
+const homeCardKana=document.getElementById('home-card-kana');
+const homeCardN5=document.getElementById('home-card-n5');
+const kanaTabsEl=document.getElementById('kana-tabs');
+const kanaHiraBtn=document.getElementById('kana-hira-btn');
+const kanaKataBtn=document.getElementById('kana-kata-btn');
+const viewSwitchEl=document.getElementById('view-switch');
+
+let currentMainMode=null;       // 'kana' | 'n5'
+let currentChapterIndex=0;
+let currentKanaVariant='hira';
+
+// 取得目前章節列表
+function getCurrentList(){
+  if(currentMainMode==='kana') return kanaChapters;
+  if(currentMainMode==='n5')   return [...grammarChapters, ...vocabChapters];
+  return [];
+}
+
+// 顯示/隱藏 main / study
+function showHome(){
+  mainHomeEl.classList.add('active');
+  studyHeaderEl.style.display='none';
+  lessonViewEl.classList.remove('active');
+  quizViewEl.classList.remove('active');
+}
+function showStudy(){
+  mainHomeEl.classList.remove('active');
+  studyHeaderEl.style.display='flex';
+  lessonViewEl.classList.add('active');
+}
+
+// render lesson
+function renderLesson(chapter){
+  chapterTitleEl.textContent=chapter.title;
+  lessonViewEl.innerHTML='';
+
+  // 五十音
+  if(chapter.type==='kana'){
+    chapter.lessons.forEach(point=>{
+      const wrap=document.createElement('div');
+      wrap.className='grammar-point';
+
+      const title=document.createElement('div');
+      title.className='grammar-title';
+      title.textContent=point.title;
+
+      const explain=document.createElement('div');
+      explain.className='grammar-explain';
+      explain.textContent=point.explain;
+
+      wrap.appendChild(title);
+      wrap.appendChild(explain);
+
+      if(point.kanaGrid){
+        const table=document.createElement('table');
+        table.className='kana-table';
+        const thead=document.createElement('thead');
+        const hr=document.createElement('tr');
+        const thCon=document.createElement('th');
+        thCon.className='kana-vowel-header';
+        thCon.textContent='子音';
+        const thV=document.createElement('th');
+        thV.className='kana-vowel-header';
+        thV.colSpan=5;
+        thV.textContent='母音（あ・い・う・え・お）';
+        hr.appendChild(thCon);
+        hr.appendChild(thV);
+        thead.appendChild(hr);
+        table.appendChild(thead);
+
+        const tbody=document.createElement('tbody');
+        point.kanaGrid.forEach(row=>{
+          const tr=document.createElement('tr');
+          const tdCon=document.createElement('td');
+          tdCon.className='kana-consonant';
+          tdCon.textContent=row.consonant;
+          tr.appendChild(tdCon);
+
+          const tdCells=document.createElement('td');
+          tdCells.colSpan=5;
+          const cellWrap=document.createElement('div');
+          cellWrap.className='kana-row-cells';
+
+          const list=currentKanaVariant==='hira'?row.kana:row.kanaKata;
+          for(let i=0;i<5;i++){
+            const c=list[i]||'';
+            const r=row.roma[i]||'';
+            const cell=document.createElement('div');
+            cell.className='kana-cell';
+            if(c){
+              const sKana=document.createElement('span');
+              sKana.className='kana-char';
+              sKana.textContent=c;
+              const sRoma=document.createElement('span');
+              sRoma.className='kana-roma';
+              sRoma.textContent=r;
+              cell.appendChild(sKana);
+              cell.appendChild(sRoma);
+            }
+            cellWrap.appendChild(cell);
+          }
+          tdCells.appendChild(cellWrap);
+          tr.appendChild(tdCells);
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        wrap.appendChild(table);
+      }
+      lessonViewEl.appendChild(wrap);
+    });
+    return;
+  }
+
+  // 文法 wrapper
+  if(chapter.type==='grammar-wrapper'){
+    chapter.lessons.forEach(point=>{
+      const div=document.createElement('div');
+      div.className='grammar-point';
+      const title=document.createElement('div');
+      title.className='grammar-title';
+      title.textContent=point.title;
+      const explain=document.createElement('div');
+      explain.className='grammar-explain';
+      explain.textContent=point.explain;
+      div.appendChild(title);
+      div.appendChild(explain);
+      lessonViewEl.appendChild(div);
+    });
+    return;
+  }
+
+  // 文法
+  if(chapter.type==='grammar'){
+    chapter.lessons.forEach(point=>{
+      const div=document.createElement('div');
+      div.className='grammar-point';
+
+      const title=document.createElement('div');
+      title.className='grammar-title';
+      title.textContent=point.title;
+
+      const explain=document.createElement('div');
+      explain.className='grammar-explain';
+      explain.textContent=point.explain;
+
+      div.appendChild(title);
+      div.appendChild(explain);
+
+      if(point.examples){
+        const ul=document.createElement('ul');
+        ul.className='example-list';
+        point.examples.forEach(ex=>{
+          const li=document.createElement('li');
+          const ja=document.createElement('div');
+          ja.className='example-ja';
+          if(ex.rubyHtml) ja.innerHTML=ex.rubyHtml;
+          else if(ex.ja) ja.textContent=ex.ja;
+          const zh=document.createElement('div');
+          zh.className='example-zh';
+          zh.textContent='→ '+ex.zh;
+          li.appendChild(ja);
+          li.appendChild(zh);
+          ul.appendChild(li);
+        });
+        div.appendChild(ul);
+      }
+
+      if(point.vocab){
+        const table=document.createElement('table');
+        table.className='vocab-table';
+        const thead=document.createElement('thead');
+        thead.innerHTML='<tr><th>漢字</th><th>假名</th><th>中文</th></tr>';
+        table.appendChild(thead);
+        const tbody=document.createElement('tbody');
+        point.vocab.forEach(w=>{
+          const tr=document.createElement('tr');
+          tr.innerHTML=`<td>${w.kanji||''}</td><td>${w.hira||''}</td><td>${w.zh||''}</td>`;
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        div.appendChild(table);
+      }
+
+      lessonViewEl.appendChild(div);
+    });
+    return;
+  }
+
+  // N5 單字（多個色塊 + 表格）
+  if(chapter.type==='vocab'){
+    chapter.lessons.forEach(point=>{
+      const div=document.createElement('div');
+      div.className='grammar-point';
+
+      const bar=document.createElement('div');
+      bar.className='vocab-section-bar';
+      const title=document.createElement('div');
+      title.className='vocab-section-title';
+      title.textContent=point.title;
+      const desc=document.createElement('div');
+      desc.className='vocab-section-desc';
+      desc.textContent=point.explain;
+      bar.appendChild(title);
+      bar.appendChild(desc);
+      div.appendChild(bar);
+
+      if(point.vocab){
+        const table=document.createElement('table');
+        table.className='vocab-table';
+        const thead=document.createElement('thead');
+        thead.innerHTML='<tr><th>漢字</th><th>假名</th><th>中文</th></tr>';
+        table.appendChild(thead);
+        const tbody=document.createElement('tbody');
+        point.vocab.forEach(w=>{
+          const tr=document.createElement('tr');
+          tr.innerHTML=`<td>${w.kanji||''}</td><td>${w.hira||''}</td><td>${w.zh||''}</td>`;
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        div.appendChild(table);
+      }
+
+      lessonViewEl.appendChild(div);
+    });
+  }
+}
+
+// quiz render / grade
+function renderQuiz(chapter){
+  quizViewEl.innerHTML='';
+
+  if(chapter.type==='vocab' || chapter.type==='grammar-wrapper'){
+    const info=document.createElement('div');
+    info.textContent='此章節暫無測驗。';
+    quizViewEl.appendChild(info);
+    return;
+  }
+
+  chapter.quiz.forEach((q,index)=>{
+    const div=document.createElement('div');
+    div.className='quiz-question';
+    const p=document.createElement('p');
+    p.textContent=`Q${index+1}. ${q.question}`;
+    div.appendChild(p);
+
+    if(q.type==='mc'){
+      const opts=document.createElement('div');
+      opts.className='options';
+      q.options.forEach(opt=>{
+        const label=document.createElement('label');
+        label.className='option-label';
+        const input=document.createElement('input');
+        input.type='radio';
+        input.name=`q${index}`;
+        input.value=opt;
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(' '+opt));
+        opts.appendChild(label);
+      });
+      div.appendChild(opts);
+    }else{
+      const input=document.createElement('input');
+      input.type='text';
+      input.name=`q${index}`;
+      input.placeholder='請輸入答案（可用日文）';
+      div.appendChild(input);
+    }
+    quizViewEl.appendChild(div);
+  });
+
+  const btn=document.createElement('button');
+  btn.id='submit-quiz';
+  btn.textContent='交卷並查看結果';
+  btn.onclick=()=>gradeQuiz(chapter);
+  const result=document.createElement('div');
+  result.id='quiz-result';
+  quizViewEl.appendChild(btn);
+  quizViewEl.appendChild(result);
+}
+
+function gradeQuiz(chapter){
+  let score=0;
+  const total=chapter.quiz.length;
+  const wrong=[];
+
+  const normalize=s=>(s||'').replace(/[。．！？!?\u3000\s]/g,'').trim();
+
+  function diffHint(user,correct){
+    if(!user) return '你尚未作答，可以再試一次。';
+    const u=user,c=correct;
+    const len=Math.max(u.length,c.length);
+    for(let i=0;i<len;i++){
+      const uc=u[i]||'',cc=c[i]||'';
+      if(uc!==cc){
+        if(!uc&&cc) return `答案後面少了「${cc}」。`;
+        if(uc&&!cc) return `你多寫了後面這一段：「${u.slice(i)}」。`;
+        return `這個位置你寫成「${uc}」，正確應為「${cc}」。`;
+      }
+    }
+    return '大致正確，可能只是標點或空格不同。';
+  }
+
+  chapter.quiz.forEach((q,index)=>{
+    if(q.type==='mc'){
+      const selected=document.querySelector(`input[name="q${index}"]:checked`);
+      const val=selected?selected.value:'';
+      if(val===q.answer) score++;
+      else wrong.push({index,user:val||'（未作答）',q});
+    }else{
+      const input=document.querySelector(`input[name="q${index}"]`);
+      const raw=input.value||'';
+      const normUser=normalize(raw);
+      const answers=Array.isArray(q.answer)?q.answer:[q.answer];
+      const ok=answers.map(a=>normalize(a)).some(a=>a===normUser);
+      if(ok) score++;
+      else wrong.push({index,user:raw||'（未作答）',q});
+    }
+  });
+
+  const result=document.getElementById('quiz-result');
+  result.innerHTML='';
+  const summary=document.createElement('div');
+  summary.textContent=`分數：${score} / ${total}`;
+  result.appendChild(summary);
+
+  if(wrong.length===0){
+    const ok=document.createElement('div');
+    ok.textContent='全部答對！做得很好！';
+    result.appendChild(ok);
+    return;
+  }
+
+  wrong.forEach(item=>{
+    const wd=document.createElement('div');
+    wd.className='wrong-detail';
+    const firstAns=Array.isArray(item.q.answer)?item.q.answer[0]:item.q.answer;
+    let extra='';
+    if(item.q.type==='input'){
+      extra=diffHint(item.user==='（未作答）'?'':item.user,firstAns);
+    }
+    wd.innerHTML=
+      `Q${item.index+1} 回答：${item.user}<br>`+
+      `正確答案：${Array.isArray(item.q.answer)?item.q.answer.join(' ／ '):item.q.answer}<br>`+
+      `解說：${item.q.explanation}`+
+      (extra?`<br><strong>提示：</strong>${extra}`:'');
+    result.appendChild(wd);
+  });
+}
+
+// view / chapter list
+function switchView(view){
+  if(view==='lesson'){
+    lessonViewEl.classList.add('active');
+    quizViewEl.classList.remove('active');
+    lessonViewBtn.classList.add('active');
+    quizViewBtn.classList.remove('active');
+  }else{
+    lessonViewEl.classList.remove('active');
+    quizViewEl.classList.add('active');
+    lessonViewBtn.classList.remove('active');
+    quizViewBtn.classList.add('active');
+  }
+}
+lessonViewBtn.onclick=()=>switchView('lesson');
+quizViewBtn.onclick=()=>switchView('quiz');
+
+function renderChapterButtons(){
+  chapterListEl.innerHTML='';
+  const list=getCurrentList();
+  list.forEach((ch,idx)=>{
+    const btn=document.createElement('button');
+    btn.className='chapter-button'+(idx===currentChapterIndex?' active':'');
+    const parts=ch.title.split('：');
+    const main=parts[0]||ch.title;
+    const sub=parts[1]||'';
+    btn.innerHTML=`<span class="main">${main}</span>`+(sub?`<span class="sub">${sub}</span>`:'');
+    btn.onclick=()=>{
+      currentChapterIndex=idx;
+      const listNow=getCurrentList();
+      renderLesson(listNow[currentChapterIndex]);
+      renderQuiz(listNow[currentChapterIndex]);
+      renderChapterButtons();
+      switchView('lesson');
+    };
+    chapterListEl.appendChild(btn);
+  });
+}
+
+// mode 切換
+function enterKanaMode(){
+  currentMainMode='kana';
+  currentChapterIndex=0;
+  homeKanaBtn.classList.add('active');
+  homeN5Btn.classList.remove('active');
+  kanaTabsEl.style.display='flex';
+  viewSwitchEl.style.display='flex';
+  quizViewBtn.style.display='inline-block';
+  lessonViewBtn.classList.add('active');
+  quizViewBtn.classList.remove('active');
+  studyModeLabelEl.textContent='五十音模式';
+  const list=getCurrentList();
+  renderChapterButtons();
+  renderLesson(list[currentChapterIndex]);
+  renderQuiz(list[currentChapterIndex]);
+  switchView('lesson');
+  showStudy();
+}
+
+function enterN5Mode(){
+  currentMainMode='n5';
+  currentChapterIndex=0;
+  homeN5Btn.classList.add('active');
+  homeKanaBtn.classList.remove('active');
+  kanaTabsEl.style.display='none';
+  viewSwitchEl.style.display='flex';
+  quizViewBtn.style.display='inline-block';
+  lessonViewBtn.classList.add('active');
+  quizViewBtn.classList.remove('active');
+  studyModeLabelEl.textContent='N5 模式（文法／單字）';
+  const list=getCurrentList();
+  renderChapterButtons();
+  renderLesson(list[currentChapterIndex]);
+  renderQuiz(list[currentChapterIndex]);
+  switchView('lesson');
+  showStudy();
+}
+
+// 按鈕事件
+homeKanaBtn.onclick=()=>enterKanaMode();
+homeN5Btn.onclick=()=>enterN5Mode();
+homeCardKana.onclick=()=>enterKanaMode();
+homeCardN5.onclick=()=>enterN5Mode();
+
+kanaHiraBtn.onclick=()=>{
+  currentKanaVariant='hira';
+  kanaHiraBtn.classList.add('active');
+  kanaKataBtn.classList.remove('active');
+  if(currentMainMode==='kana'){
+    const list=getCurrentList();
+    renderLesson(list[currentChapterIndex]);
+  }
+};
+kanaKataBtn.onclick=()=>{
+  currentKanaVariant='kata';
+  kanaKataBtn.classList.add('active');
+  kanaHiraBtn.classList.remove('active');
+  if(currentMainMode==='kana'){
+    const list=getCurrentList();
+    renderLesson(list[currentChapterIndex]);
+  }
+};
+
+// 初始：先顯示主畫面
+showHome();
+</script>
+</body>
+</html>
